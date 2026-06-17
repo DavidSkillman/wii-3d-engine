@@ -2,6 +2,7 @@
 #ifndef PHYSICSGAME_H
 #define PHYSICSGAME_H
 
+#include <asndlib.h>
 #include <WireApplication.h>
 #include <btBulletDynamicsCommon.h>
 
@@ -14,6 +15,7 @@
 #include "small-impact_07_raw.h"
 
 #include "character_wmesh.h"
+#include "box_wmesh.h"
 
 const uint8_t* impact_sounds[] = { small_impact_01_raw, small_impact_02_raw, small_impact_03_raw, small_impact_04_raw, small_impact_05_raw, small_impact_06_raw, small_impact_07_raw };
 const size_t impact_sounds_size[] = { small_impact_01_raw_size, small_impact_02_raw_size, small_impact_03_raw_size, small_impact_04_raw_size, small_impact_05_raw_size, small_impact_06_raw_size, small_impact_07_raw_size };
@@ -68,7 +70,7 @@ namespace Wire
 		};
 
 		void CreateGameObjects();
-		static TArray<RenderObjectPtr>* CreateCharacter();
+		static TArray<RenderObjectPtr>* CreateModel(const UChar* ptr, bool dbg = false);
 		static Material* CreateMaterial(Vector3F color);
 		static Material* CreateCheckerBoardMaterial(Vector3F primaryColor, Vector3F secondaryColor);
 		Vector3F camPos;
@@ -86,7 +88,6 @@ namespace Wire
 		void SetRotation(Vector3F rotation);
 		Vector3F camRotation;
 		RenderObject* pFloor;
-		TArray<RenderObjectPtr>* pCharacter;
 
 		inline btVector3 Convert(Vector3F in)
 		{
@@ -117,7 +118,7 @@ namespace Wire
 
 		TArray<GameObject> mGameObjects;
 
-		RenderObjectPtr mspBox;
+		TArray<RenderObjectPtr>* mspBox;
 		RenderObjectPtr mspBall;
 		BoundingVolumePtr mspWorldBound;
 		MaterialPtr mspMaterial;

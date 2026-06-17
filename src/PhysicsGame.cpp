@@ -2,7 +2,6 @@
 // This sample demonstrates how to use the Bullet Physics engine in Wire.
 
 #include "PhysicsGame.h"
-#include <asndlib.h>
 
 using namespace Wire;
 
@@ -124,7 +123,7 @@ void PhysicsGame::CreateGameObjects()
 {
 	WIRE_ASSERT(mpDynamicsWorld); // Has the physics world been created?
 
-	Material* pMaterial = CreateCheckerBoardMaterial(Vector3F(255.f, 16.f, 16.f), Vector3F(228.f, 16.f, 16.f));
+	//Material* pMaterial = CreateCheckerBoardMaterial(Vector3F(255.f, 16.f, 16.f), Vector3F(228.f, 16.f, 16.f));
 	Material* pCBMaterial = CreateCheckerBoardMaterial(Vector3F(16.f, 16.f, 16.f), Vector3F(248.f, 248.f, 248.f));
 	
 	// create a few basic rigid bodies and their rendering representation
@@ -153,22 +152,20 @@ void PhysicsGame::CreateGameObjects()
 		floorZ * 2));
 	mGameObjects.Append(groundFloor);
 
-	pCharacter = CreateCharacter();
+	TArray<RenderObjectPtr>* mspCharacter = CreateModel(character_wmesh);
 	btCollisionShape* pColCharacter = WIRE_NEW btBoxShape(btVector3(
 		btScalar(1), btScalar(1), btScalar(1)));
 	btRigidBody* pRigidCharacter = CreateRigidBody(pColCharacter, 1.0f,
-		Vector3F(3.0f, 0.0f, 0.0f));
+		Vector3F(0.0f, -4.0f, 3.0f));
 
-	GameObject box(pCharacter, pColCharacter, pRigidCharacter);
-	box.WorldTransformation.SetScale(Vector3F::ONE * 0.05f);
-	mGameObjects.Append(box);
+	GameObject character(mspCharacter, pColCharacter, pRigidCharacter);
+	character.WorldTransformation.SetScale(Vector3F::ONE * 0.05f);
+	mGameObjects.Append(character);
 
 	// 1 RenderObject Box to reuse 
 	const Float extent = 0.5f;
 	//mspBox = StandardMesh::CreateIcosahedron(extent*1.3, 1, true);
-	mspBox = StandardMesh::CreateCube24(0, 1, true, extent);
-	mspBox->SetMaterial(pMaterial);
-	mspBox->GetMesh()->GenerateNormals();
+	mspBox = CreateModel(box_wmesh, true);
 
 	// create a stack of boxes
 	Bool switchX = false;
@@ -261,10 +258,8 @@ float ReadFloat(const UChar*& p)
     return f;
 }
 
-TArray<RenderObjectPtr>* PhysicsGame::CreateCharacter()
+TArray<RenderObjectPtr>* PhysicsGame::CreateModel(const UChar* ptr, bool dbg)
 {
-	const UChar* ptr = character_wmesh;
-
 	char magic[]{0xDE, 0xEA, 0x7F, 0xDE, 0xFE, 0xA7, 0xED};
 	if (memcmp(ptr, magic, 7) != 0)
 	{
@@ -368,28 +363,28 @@ TArray<RenderObjectPtr>* PhysicsGame::CreateCharacter()
 				ReadFloat(ptr)
 			};
 
-			Vector4F v(vertex.X(), vertex.Y(), vertex.Z(), 1.0f);
+			// Vector4F v(vertex.X(), vertex.Y(), vertex.Z(), 1.0f);
 
-			Vector3F result(0, 0, 0);
+			// Vector3F result(0, 0, 0);
 
-			for (UChar i = 0; i < 4; i++)
-			{
-				Float w = weights[i];
-				if (w <= 0.0f)
-					continue;
+			// for (UChar i = 0; i < 4; i++)
+			// {
+			// 	Float w = weights[i];
+			// 	if (w <= 0.0f)
+			// 		continue;
 
-				UChar boneID = boneIDs[i];
+			// 	UChar boneID = boneIDs[i];
 
-				// SAFETY: prevent crash / garbage reads
-				if (boneID >= boneCount)
-					continue;
+			// 	// SAFETY: prevent crash / garbage reads
+			// 	if (boneID >= boneCount)
+			// 		continue;
 
-				Vector4F t = /*worldBones[boneID] * */v;
+			// 	Vector4F t = worldBones[boneID] * v;
 
-				result += Vector3F(t.X(), t.Y(), t.Z()) * w;
-			}
+			// 	result += Vector3F(t.X(), t.Y(), t.Z()) * w;
+			// }
 			
-			vertex = result;
+			//vertex = result;
 
 			pVBuffer->Position3(i) = vertex;
 			pVBuffer->Color3(i) = ColorRGB(255, 255, 255);
@@ -468,56 +463,6 @@ Material* PhysicsGame::CreateCheckerBoardMaterial(Vector3F primaryColor, Vector3
 
 	return pMaterial;
 }
-
-//----------------------------------------------------------------------------
-// Texture2D* PhysicsGame::CreateTexture()
-// {
-// 	// Create a texture from raw RGB data.
-// 	const UInt width = controls.width;
-// 	const UInt height = controls.height;
-
-// 	// We create a buffer, copy the RGB values and add alpha values to
-// 	// the texture because we want to demonstrate alpha blending.
-// 	UChar* const pDst = WIRE_NEW UChar[width * height * 4];
-// 	const UChar* pSrc = controls.pixel_data;
-// 	for (UInt y = 0; y < height; y++)
-// 	{
-// 		for (UInt x = 0; x < width; x++)
-// 		{
-// 			pDst[(y*width + x)*4] = *pSrc++;	// R
-// 			pDst[(y*width + x)*4+1] = *pSrc++;	// G
-// 			pDst[(y*width + x)*4+2] = *pSrc++;	// B
-
-// 			// The alpha value of the texel is calculated using the
-// 			// texel's distance to the center of the texture, so that the
-// 			// center is opaque and transparency increases with the texel's
-// 			// distance from the center.
-// 			Float distance = 255.0F - Vector2F(x-width*0.5F, y-height*0.5F).
-// 				Length() * 4 + 150;
-// 			distance = distance < 0 ? 0 : distance;
-// 			UChar alpha = distance > 255 ? 255 : static_cast<UChar>(distance);
-// 			pDst[(y*width + x)*4+3] = alpha;
-// 		}
-// 	}
-
-// 	// Create an Image. Mipmaps are created automatically unless 'false' is
-// 	// passed as the last argument.
-// 	// NOTE: Image2D takes ownership of the supplied raw buffer.
-// 	// Do NOT delete that buffer yourself. Image2D takes care of that.
-// 	Image2D* pImage = WIRE_NEW Image2D(Image2D::FM_RGBA8888, width, height,
-// 		pDst);
-
-// 	// Create a Texture using this image. Images can be shared amongst
-// 	// texture objects. So you can use different filter/wrap/anisotropy values
-// 	// without the need to duplicate images in memory.
-// 	Texture2D* pTexture = WIRE_NEW Texture2D(pImage);
-
-// 	// Use anisotropic filtering for texturing. Looks better, but lowers
-// 	// performance.
-// 	pTexture->SetAnisotropyValue(4.0F);
-
-// 	return pTexture;
-// }
 
 //----------------------------------------------------------------------------
 Vector3F PhysicsGame::LocalToGlobal(Vector3F rotation, Vector3F forwardVector)
