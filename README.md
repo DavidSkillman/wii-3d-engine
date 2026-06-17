@@ -1,3 +1,5 @@
+<img width="2472" height="1440" alt="ID-PhysicsGame_2026-06-17_21-11-00" src="https://github.com/user-attachments/assets/59d6bbf2-551b-45c4-ab09-0134462426b0" />
+
 # Wii 3D Engine
 This project began as an experiment to explore how far modern-style 3D rendering, physics simulation, and custom asset pipelines could be pushed on Nintendo Wii hardware while remaining lightweight, approachable, and efficient.
 
