@@ -2,8 +2,8 @@
 #ifndef PHYSICSGAME_H
 #define PHYSICSGAME_H
 
-#include "WireApplication.h"
-#include "btBulletDynamicsCommon.h"
+#include <WireApplication.h>
+#include <btBulletDynamicsCommon.h>
 
 #include "small-impact_01_raw.h"
 #include "small-impact_02_raw.h"

@@ -1,0 +1,3 @@
+[submodule "wire3d"]
+	path = wire3d
+	url = https://github.com/rrath/Wire3D.git

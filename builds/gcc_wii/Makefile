@@ -15,8 +15,8 @@ include $(DEVKITPPC)/wii_rules
 # SOURCES is a list of directories containing source code
 # INCLUDES is a list of directories containing extra header files
 #---------------------------------------------------------------------------------
-WIREDIR			:=  ../../../../../Wire
-BULLETDIR		:=  ../../../../../Tools/bullet-2.77
+WIREDIR			:=  $(abspath ../../wire3d/Wire)
+BULLETDIR		:=  $(abspath ../../wire3d/Tools/bullet-2.77)
 TARGET			:=	PhysicsGame
 SOURCES			:=	../../src
 DATA			:=  ../../data
@@ -30,7 +30,7 @@ BUILD			:=	Release
 LIBWIRE			:=	libWire.a
 BUILDPOSTFIX	:=
 endif
-LIBWIRE_LIB 	:=	$(WIREDIR)/lib/gcc_wii/$(BUILD)
+ROOT_DIR        := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -77,6 +77,8 @@ CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 sFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
 SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.S)))
 BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*)))
+
+LIBWIRE_LIB := $(abspath $(CURDIR)/../../wire3d/Wire/lib/gcc_wii)/$(BUILD)
 
 #---------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C
