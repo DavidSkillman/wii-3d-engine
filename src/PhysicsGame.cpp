@@ -342,9 +342,9 @@ TArray<RenderObjectPtr>* PhysicsGame::CreateModel(const UChar* ptr, bool dbg)
 		{
 			Vector3F vertex = Vector3F(ReadFloat(ptr), ReadFloat(ptr), ReadFloat(ptr));
 			Vector3F normal = Vector3F(
-				std::max(std::min((std::max(ReadFloat(ptr) + 1.0f, material->roughness) - 1.0f) * (material->metallic + 1.0f) * 4.0f, 1.0f), -1.0f),
-				std::max(std::min((std::max(ReadFloat(ptr) + 1.0f, material->roughness) - 1.0f) * (material->metallic + 1.0f) * 4.0f, 1.0f), -1.0f),
-				std::max(std::min((std::max(ReadFloat(ptr) + 1.0f, material->roughness) - 1.0f) * (material->metallic + 1.0f) * 4.0f, 1.0f), -1.0f)
+				std::max(std::min((std::max(ReadFloat(ptr) + 1.0f, material->roughness) - 1.0f) * (material->metallic + 1.0f) * -4.0f, 1.0f), -1.0f),
+				std::max(std::min((std::max(ReadFloat(ptr) + 1.0f, material->roughness) - 1.0f) * (material->metallic + 1.0f) * -4.0f, 1.0f), -1.0f),
+				std::max(std::min((std::max(ReadFloat(ptr) + 1.0f, material->roughness) - 1.0f) * (material->metallic + 1.0f) * -4.0f, 1.0f), -1.0f)
 			);
 
 			const UChar boneIDs[4] =
