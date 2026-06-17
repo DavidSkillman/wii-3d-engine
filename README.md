@@ -1,48 +1,72 @@
 # Wii 3D Engine
+This project began as an experiment to explore how far modern-style 3D rendering, physics simulation, and custom asset pipelines could be pushed on Nintendo Wii hardware while remaining lightweight, approachable, and efficient.
 
-A lightweight 3D engine for the Nintendo Wii built on top of Wire3D.
-
-This project began as an experiment to see how far modern-style 3D rendering and physics could be pushed on Wii hardware while keeping the codebase simple and easy to understand.
-
-The engine currently powers a small physics sandbox featuring rigid body simulation, object spawning, and real-time interaction using the Wii Remote.
+The engine currently powers a physics sandbox featuring real-time rigid body simulation, object spawning, collision detection, and Wii Remote interaction. Alongside the engine, a dedicated asset pipeline allows models to be converted into a custom `.wmesh` format optimized specifically for the constraints of the Wii.
 
 ## Why?
 
-The Nintendo Wii is a surprisingly capable system, but there are very few modern resources available for creating 3D applications from scratch.
+The Nintendo Wii remains one of the most successful game consoles ever created, yet modern resources for low-level 3D game development on the platform are surprisingly limited.
 
-This project exists to explore:
+This project exists as both a learning exercise and a practical game development framework, exploring topics such as:
 
-- Real-time 3D rendering on Wii
-- Physics simulation
-- Asset loading and custom file formats
-- Engine architecture for constrained hardware
-- Homebrew game development
+* Real-time 3D rendering
+* Physics simulation
+* Asset pipelines and custom file formats
+* Performance optimization on constrained hardware
+* Homebrew game development
+* Engine architecture and tooling
 
 ## Features
 
-- 3D rendering using Wire3D
-- Physics simulation
-- Wii Remote input
-- Optimized for real hardware
-- Open source
-- Built entirely with C++
+### Rendering
+
+* 3D rendering powered by Wire3D
+* Real-time camera movement
+* Hardware-accelerated graphics
+* Optimized for native Wii hardware
+
+### Physics
+
+* Rigid body simulation
+* Collision detection
+* Dynamic object spawning
+* Interactive physics sandbox
+
+### Asset Pipeline
+
+* Custom `.wmesh` format
+* Fast binary asset loading
+* Reduced runtime processing requirements
+* Integration with the [Wii Mesh exporter](https://github.com/DavidSkillman/wii-mesh)
 
 ## Demo
 
-The included physics demo allows you to:
+The included physics demo showcases the engine's rendering and simulation capabilities.
 
-- Spawn dynamic objects
-- Interact with stacks of rigid bodies
-- Enable slow motion effects
-- Test engine performance on real Wii hardware
+### Controls
 
-## Requirements
+| Button           | Action             |
+| ---------------- | ------------------ |
+| 1                | Spawn two spheres  |
+| 2 (Hold)         | Enable slow motion |
+| D-Pad            | Look               |
+| A                | Move Forwards      |
+| B                | Move Backwards     |
+| +                | Ascend             |
+| -                | Descend            |
+| Home             | Quit               |
 
-Install devkitPro:
+### Features Demonstrated
 
-https://devkitpro.org/wiki/Getting_Started
+* Real-time physics simulation
+* Object stacking and collisions
+* Dynamic rigid body spawning
+* Large numbers of active physics objects
+* Real hardware performance testing
 
 ## Building
+
+**Make sure you have [devkitPro](https://devkitpro.org/wiki/Getting_Started) installed.**
 
 Clone the repository:
 
@@ -77,14 +101,22 @@ After compilation, the generated `.dol` file can be loaded on a Nintendo Wii usi
 
 ## Project Structure
 
-```yaml
+```text
 wii-3d-engine/
-├── builds/
-├── data/
-├── src/
-├── wire3d/
-└── source/
+├── builds/        # Build scripts and makefiles
+├── data/          # Assets and resources
+├── source/        # Engine source code
+├── src/           # Third-party dependencies
+└── wire3d/        # Wire3D submodule
 ```
+
+## Related Projects
+
+### Wii Mesh
+
+The recommended asset pipeline for the engine.
+
+Wii Mesh imports common 3D model formats through Assimp and converts them into the custom `.wmesh` format used by the engine. The exporter also performs optimization and automatic mesh chunking for compatibility with Wii hardware.
 
 ## License
 
@@ -92,4 +124,4 @@ This project is licensed under the MIT License. See `LICENSE` for details.
 
 ---
 
-Made with ❤ by David Skillman
+Made with ❤️ by David Skillman
